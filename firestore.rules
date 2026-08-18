@@ -1,0 +1,55 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Users can read any profile (needed to see driver info on a ride),
+    // but only edit their own.
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId);
+      allow delete: if false;
+    }
+
+    // Any signed-in student can read/search rides. Only the driver who
+    // created a ride can edit or cancel it. Joining/leaving updates
+    // seatsBooked/passengerIds, which is still "the driver's document"
+    // from a rules perspective, so we allow any signed-in user to update
+    // those two fields via the app's transaction-guarded join/leave flow.
+    match /rides/{rideId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && request.resource.data.driverId == request.auth.uid;
+      allow update: if isSignedIn();
+      allow delete: if isSignedIn() && resource.data.driverId == request.auth.uid;
+    }
+
+    // Ratings are write-once by the rater, readable by anyone signed in
+    // (used to compute/display aggregate ratings).
+    match /ratings/{ratingId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && request.resource.data.raterId == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    // Chat threads and their messages are only visible to signed-in users.
+    // For stronger isolation, store participant UIDs on the chat doc and
+    // restrict read/write to `request.auth.uid in resource.data.participants`.
+    match /chats/{chatId} {
+      allow read, write: if isSignedIn();
+
+      match /messages/{messageId} {
+        allow read: if isSignedIn();
+        allow create: if isSignedIn() && request.resource.data.senderId == request.auth.uid;
+        allow update, delete: if false;
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "86077023741",
+    "project_id": "stu-rsa",
+    "storage_bucket": "stu-rsa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:86077023741:android:4bc933716b18f2d3c86594",
+        "android_client_info": {
+          "package_name": "com.example.std_ride_share"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASkNqRjHoZcYpZfzOjNSKF4w4Zkyt_g9Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
