@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # CampusRide — Student Car Ride Sharing App
 
 A Flutter + Firebase mobile app that lets verified students post and join
@@ -122,3 +123,7 @@ deploy it alongside your Firestore database.
 - Replace all `REPLACE_WITH_YOUR_...` placeholders in
   `firebase_options.dart` by running `flutterfire configure` — the app
   will not connect to Firebase until that's done.
+=======
+# Students-Ride-Share-App-
+This app is create for students to share there rides (cars and bikes) to save Traveling cost, be safe and make netwrok
+>>>>>>> 4b87b757f60dc7fdf9e74459f4a548c587c2a645
